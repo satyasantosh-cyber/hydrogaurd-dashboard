@@ -8,12 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#040d1a;--bg2:#071428;--card:#0a1f3d;--border:#1a3a6b;
-  --accent:#00d4ff;--text:#e8f4ff;--muted:#5a8ab0;
-  --green:#00ff9d;--yellow:#ffcc00;--red:#ff3b5c;
-  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
-}
+:root{--bg:#040d1a;--bg2:#071428;--card:#0a1f3d;--border:#1a3a6b;--accent:#00d4ff;--text:#e8f4ff;--muted:#5a8ab0;--green:#00ff9d;--yellow:#ffcc00;--red:#ff3b5c;--font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace}
 body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
 #login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
 .login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 0 60px rgba(0,212,255,0.08)}
@@ -47,10 +42,79 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .page-header{margin-bottom:28px}
 .page-header h2{font-size:24px;font-weight:700}
 .page-header p{color:var(--muted);font-size:14px;margin-top:4px}
+.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.sum-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px}
+.sum-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.sum-val{font-size:24px;font-weight:700;font-family:var(--mono)}
+.sum-label{font-size:12px;color:var(--muted);margin-top:2px}
+.plants-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.plant-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s;position:relative}
+.plant-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.1)}
+.plant-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.plant-name{font-size:16px;font-weight:600}
+.plant-id{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.status-ring{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;border:3px solid;text-transform:uppercase}
+.status-ring.GREEN{border-color:var(--green);color:var(--green);box-shadow:0 0 12px rgba(0,255,157,0.3)}
+.status-ring.YELLOW{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 12px rgba(255,204,0,0.3)}
+.status-ring.RED{border-color:var(--red);color:var(--red);box-shadow:0 0 12px rgba(255,59,92,0.3)}
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--bg2);border-radius:8px;padding:12px;text-align:center}
+.metric-val{font-size:18px;font-weight:700;font-family:var(--mono)}
+.metric-label{font-size:11px;color:var(--muted);margin-top:2px}
+.metric-val.warn{color:var(--yellow)}
+.metric-val.alert{color:var(--red)}
+.metric-val.ok{color:var(--green)}
+.cod-bar-wrap{margin-top:4px}
+.cod-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.cod-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.cod-fill{height:100%;border-radius:3px}
+.plant-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.plant-ts{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.view-btn{font-size:12px;color:var(--accent);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:6px;padding:6px 12px;cursor:pointer}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--accent);background:none;border:none;cursor:pointer;font-size:14px;margin-bottom:24px;padding:8px 0;font-family:var(--font)}
+.detail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.detail-title h2{font-size:26px;font-weight:700}
+.detail-title p{color:var(--muted);font-size:14px;margin-top:4px}
+.gauge-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:24px}
+.gauge-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 16px;text-align:center}
+.gauge-val{font-size:26px;font-weight:700;font-family:var(--mono);margin-bottom:4px}
+.gauge-param{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px}
+.gauge-limit{font-size:10px;color:var(--muted);margin-top:6px}
+.gauge-bar{height:3px;background:var(--bg);border-radius:2px;margin-top:10px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:2px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.chart-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px}
+.chart-wrap{position:relative;height:200px}
+.recs-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px}
+.recs-title{font-size:14px;font-weight:600;margin-bottom:16px}
+.rec-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.rec-item:last-child{border-bottom:none}
+.rec-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0;margin-top:2px}
+.rec-badge.HIGH{background:rgba(255,59,92,0.15);color:var(--red);border:1px solid rgba(255,59,92,0.3)}
+.rec-badge.WARNING{background:rgba(255,204,0,0.15);color:var(--yellow);border:1px solid rgba(255,204,0,0.3)}
+.rec-badge.OK{background:rgba(0,255,157,0.1);color:var(--green);border:1px solid rgba(0,255,157,0.2)}
+.rec-badge.MAINTENANCE{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2)}
+.rec-param{font-size:13px;font-weight:600;margin-bottom:2px}
+.rec-action{font-size:13px;color:var(--muted)}
+.sensor-health{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.health-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.health-icon{font-size:24px;margin-bottom:8px}
+.health-sensor{font-size:12px;color:var(--muted);text-transform:uppercase}
+.health-status{font-size:13px;font-weight:600;margin-top:4px}
+.health-drift{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.op-header{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+.op-plant-info h2{font-size:22px;font-weight:700}
+.op-plant-info p{color:var(--muted);font-size:13px;margin-top:4px}
+.loading{text-align:center;padding:60px;color:var(--muted)}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+@media(max-width:768px){.summary-strip{grid-template-columns:repeat(2,1fr)}.gauge-row{grid-template-columns:repeat(3,1fr)}.charts-row{grid-template-columns:1fr}.sensor-health{grid-template-columns:repeat(2,1fr)}.main{padding:16px}}
+@media(max-width:480px){.gauge-row{grid-template-columns:repeat(2,1fr)}.summary-strip{grid-template-columns:1fr 1fr}.login-box{padding:32px 24px;margin:16px}}
 </style>
 </head>
 <body>
-
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
@@ -58,19 +122,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <h1>HydroGuard</h1>
       <p>ETP Water Quality Monitoring System</p>
     </div>
-    <div class="field">
-      <label>Username</label>
-      <input type="text" id="username" placeholder="Enter username" autocomplete="off"/>
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="Enter password"/>
-    </div>
+    <div class="field"><label>Username</label><input type="text" id="username" placeholder="Enter username" autocomplete="off"/></div>
+    <div class="field"><label>Password</label><input type="password" id="password" placeholder="Enter password"/></div>
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-err" id="login-err">Invalid username or password</div>
   </div>
 </div>
-
 <div id="app">
   <div class="topbar">
     <div class="topbar-left">
@@ -81,15 +138,157 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="live-dot">Live</div>
       <div class="user-badge">
         <div class="user-avatar" id="user-avatar">A</div>
-        <div>
-          <div class="user-name" id="user-name-display">Admin</div>
-          <div class="user-role" id="user-role-display">Administrator</div>
-        </div>
+        <div><div class="user-name" id="user-name-display">Admin</div><div class="user-role" id="user-role-display">Administrator</div></div>
       </div>
       <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
   </div>
-  <div class="main" id="main-content">
-    <div class="page-header"><h2>Loading…</h2></div>
+  <div class="main">
+    <div id="admin-view">
+      <div class="summary-strip">
+        <div class="sum-card"><div class="sum-icon" style="background:rgba(0,212,255,0.1)">🏭</div><div><div class="sum-val" id="sum-plants">5</div><div class="sum-label">Active Plants</div></div></div>
+        <div class="sum-card"><div class="sum-icon" style="background:rgba(0,255,157,0.1)">✅</div><div><div class="sum-val" id="sum-green" style="color:var(--green)">—</div><div class="sum-label">Compliant</div></div></div>
+        <div class="sum-card"><div class="sum-icon" style="background:rgba(255,204,0,0.1)">⚠️</div><div><div class="sum-val" id="sum-yellow" style="color:var(--yellow)">—</div><div class="sum-label">Warnings</div></div></div>
+        <div class="sum-card"><div class="sum-icon" style="background:rgba(255,59,92,0.1)">🚨</div><div><div class="sum-val" id="sum-red" style="color:var(--red)">—</div><div class="sum-label">Critical</div></div></div>
+      </div>
+      <div id="admin-grid-view">
+        <div class="page-header"><h2>All Plants Overview</h2><p>Tap any plant card to view full details</p></div>
+        <div class="plants-grid" id="plants-grid"><div class="loading"><div class="spinner"></div>Loading plant data from S3…</div></div>
+      </div>
+      <div id="detail-view" style="display:none">
+        <button class="back-btn" onclick="showAdminGrid()">← Back to all plants</button>
+        <div id="detail-content"></div>
+      </div>
+    </div>
+    <div id="operator-view" style="display:none">
+      <div id="operator-content"><div class="loading"><div class="spinner"></div>Loading your plant data…</div></div>
+    </div>
   </div>
 </div>
+<script>
+const S3_BASE = "https://hydroguard-readings.s3.ap-southeast-2.amazonaws.com";
+const USERS = {
+  "admin":{password:"hydroguard@2026",role:"admin",plant:null,name:"Admin"},
+  "plant1":{password:"plant@2026",role:"operator",plant:"plant_1",name:"Operator 1"},
+  "plant2":{password:"plant@2026",role:"operator",plant:"plant_2",name:"Operator 2"},
+  "plant3":{password:"plant@2026",role:"operator",plant:"plant_3",name:"Operator 3"},
+  "plant4":{password:"plant@2026",role:"operator",plant:"plant_4",name:"Operator 4"},
+  "plant5":{password:"plant@2026",role:"operator",plant:"plant_5",name:"Operator 5"}
+};
+const PLANTS=["plant_1","plant_2","plant_3","plant_4","plant_5"];
+let currentUser=null,plantCache={},chartInstances={};
+
+function doLogin(){
+  const u=document.getElementById("username").value.trim().toLowerCase();
+  const p=document.getElementById("password").value;
+  const err=document.getElementById("login-err");
+  const user=USERS[u];
+  if(!user||user.password!==p){err.style.display="block";return;}
+  err.style.display="none";
+  currentUser={...user,username:u};
+  document.getElementById("login-screen").style.display="none";
+  document.getElementById("app").style.display="block";
+  document.getElementById("user-name-display").textContent=user.name;
+  document.getElementById("user-role-display").textContent=user.role==="admin"?"Administrator":`Plant ${user.plant}`;
+  document.getElementById("user-avatar").textContent=user.name[0].toUpperCase();
+  if(user.role==="admin")initAdmin();else initOperator(user.plant);
+}
+document.addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+function doLogout(){
+  currentUser=null;plantCache={};destroyCharts();
+  document.getElementById("login-screen").style.display="flex";
+  document.getElementById("app").style.display="none";
+  document.getElementById("username").value="";
+  document.getElementById("password").value="";
+}
+async function fetchLatestForPlant(plantId){
+  if(plantCache[plantId])return plantCache[plantId];
+  try{
+    const listUrl=`${S3_BASE}?list-type=2&prefix=readings/${plantId}/&max-keys=50`;
+    const res=await fetch(listUrl);
+    const xml=await res.text();
+    const keys=[...xml.matchAll(/<Key>([^<]+)<\/Key>/g)].map(m=>m[1]).filter(k=>k.endsWith(".json"));
+    if(!keys.length)return null;
+    keys.sort();
+    const latest=keys[keys.length-1];
+    const dataRes=await fetch(`${S3_BASE}/${latest}`);
+    const data=await dataRes.json();
+    const recent=keys.slice(-10);
+    const history=await Promise.all(recent.map(k=>fetch(`${S3_BASE}/${k}`).then(r=>r.json()).catch(()=>null)));
+    data._history=history.filter(Boolean);
+    plantCache[plantId]=data;
+    return data;
+  }catch(e){console.error(plantId,e);return null;}
+}
+async function fetchAllPlants(){return Promise.all(PLANTS.map(p=>fetchLatestForPlant(p)));}
+async function initAdmin(){
+  document.getElementById("admin-view").style.display="block";
+  document.getElementById("operator-view").style.display="none";
+  showAdminGrid();
+  const data=await fetchAllPlants();
+  renderAdminGrid(data);
+  updateSummary(data);
+}
+function showAdminGrid(){
+  document.getElementById("admin-grid-view").style.display="block";
+  document.getElementById("detail-view").style.display="none";
+  destroyCharts();
+}
+function updateSummary(data){
+  const valid=data.filter(Boolean);
+  let g=0,y=0,r=0;
+  valid.forEach(d=>{if(d.alert_level==="GREEN")g++;else if(d.alert_level==="YELLOW")y++;else r++;});
+  document.getElementById("sum-green").textContent=g;
+  document.getElementById("sum-yellow").textContent=y;
+  document.getElementById("sum-red").textContent=r;
+}
+function renderAdminGrid(allData){
+  const grid=document.getElementById("plants-grid");
+  if(!allData.some(Boolean)){grid.innerHTML='<div class="empty">No data found in S3. Run csv_to_iot.py first.</div>';return;}
+  grid.innerHTML=PLANTS.map((pid,i)=>{
+    const d=allData[i];
+    if(!d)return `<div class="plant-card"><div class="empty">No data for ${pid}</div></div>`;
+    const r=d.readings||{};
+    const al=d.alert_level||"GREEN";
+    const cod=d.cod_predicted||0;
+    const codPct=Math.min(100,(cod/250)*100);
+    const codColor=cod>250?"var(--red)":cod>200?"var(--yellow)":"var(--green)";
+    const ts=d.timestamp?new Date(d.timestamp*1000).toLocaleString():"—";
+    return `<div class="plant-card" onclick="showDetail('${pid}')">
+      <div class="plant-header"><div><div class="plant-name">${pid.replace("_"," ").toUpperCase()}</div><div class="plant-id">${d.device_id||pid}</div></div><div class="status-ring ${al}">${al}</div></div>
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val ${phClass(r.ph)}">${fmt(r.ph)}</div><div class="metric-label">pH</div></div>
+        <div class="metric"><div class="metric-val ${turbClass(r.turbidity)}">${fmt(r.turbidity)}</div><div class="metric-label">Turbidity</div></div>
+        <div class="metric"><div class="metric-val ${codClass(cod)}">${fmt(cod)}</div><div class="metric-label">COD pred.</div></div>
+      </div>
+      <div class="cod-bar-wrap"><div class="cod-bar-label"><span>COD vs CPCB limit (250 mg/L)</span><span>${fmt(cod)} mg/L</span></div><div class="cod-bar"><div class="cod-fill" style="width:${codPct}%;background:${codColor}"></div></div></div>
+      <div class="plant-footer"><div class="plant-ts">Last: ${ts}</div><button class="view-btn">View details →</button></div>
+    </div>`;
+  }).join("");
+}
+async function showDetail(plantId){
+  document.getElementById("admin-grid-view").style.display="none";
+  document.getElementById("detail-view").style.display="block";
+  document.getElementById("detail-content").innerHTML='<div class="loading"><div class="spinner"></div>Loading details…</div>';
+  destroyCharts();
+  const d=await fetchLatestForPlant(plantId);
+  if(!d){document.getElementById("detail-content").innerHTML='<div class="empty">No data available.</div>';return;}
+  renderDetail(d,plantId,"detail-content");
+}
+function renderDetail(d,plantId,containerId){
+  const r=d.readings||{};
+  const al=d.alert_level||"GREEN";
+  const sh=d.sensor_health||{};
+  const recs=d.recommendations||[];
+  const ts=d.timestamp?new Date(d.timestamp*1000).toLocaleString():"—";
+  const history=d._history||[d];
+  const params=[
+    {key:"ph",label:"pH",val:r.ph,unit:"",limit:"6.5–8.5"},
+    {key:"turbidity",label:"Turbidity",val:r.turbidity,unit:"NTU",limit:"≤100 NTU"},
+    {key:"tds",label:"TDS",val:r.tds,unit:"ppm",limit:"≤2100 ppm"},
+    {key:"temperature",label:"Temp",val:r.temperature,unit:"°C",limit:"≤40 °C"},
+    {key:"cod",label:"COD (pred)",val:d.cod_predicted,unit:"mg/L",limit:"≤250 mg/L"},
+    {key:"color",label:"Color",val:r.color,unit:"Pt-Co",limit:"≤150"}
+  ];
+  const gaugeHTML=params.map(p=>{
+    const cls=paramClass(p
